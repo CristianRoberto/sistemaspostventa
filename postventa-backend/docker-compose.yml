@@ -1,0 +1,34 @@
+# services:
+#   app:
+#     build: .
+#     container_name: postventa-backend
+#     ports:
+#       - "5000:5000"  # Mapea el puerto 5000 de tu contenedor al puerto 5000 en tu máquina local
+#     environment:
+#       - DB_URL=postgres://postgres:gilcespanta1994@db:5432/postventa
+#       - DB_USER=crgp
+#       - DB_PASSWORD=gilcespanta1994
+#       - DB_NAME=postventa
+#       - DB_HOST=db  # Usa el nombre del servicio "db" como host para la base de datos
+#       - DB_PORT=5432
+#     depends_on:
+#       - db  # Asegura que el servicio de la base de datos esté disponible antes de iniciar la app
+#     restart: always  # Reinicia automáticamente el contenedor en caso de fallo
+#     volumes:
+#       - .:/usr/src/app  # Mapea el directorio actual al contenedor para facilitar el desarrollo
+
+#   db:
+#     image: postgres:13
+#     container_name: postventa-db
+#     environment:
+#       POSTGRES_USER: crgp
+#       POSTGRES_PASSWORD: gilcespanta1994
+#       POSTGRES_DB: postventa
+#     ports:
+#       - "5432:5432"  # Mapea el puerto 5432 del contenedor al puerto local
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data  # Volumen persistente para los datos de la base de datos
+#     restart: always  # Reinicia automáticamente el contenedor en caso de fallo
+
+# volumes:
+#   postgres_data:

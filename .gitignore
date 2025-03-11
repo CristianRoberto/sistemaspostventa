@@ -1,0 +1,19 @@
+# Node modules (dependencias de Node.js)
+node_modules/
+
+# Archivos de build (frontend y backend)
+my-app/build/
+postventa-backend/node_modules/
+postventa-backend/build/
+
+# Archivos de logs
+*.log
+
+# Archivos temporales de sistemas operativos
+.DS_Store
+Thumbs.db
+
+# Otros archivos pesados que no deseas subir
+*.env
+*.sqlite
+*.db

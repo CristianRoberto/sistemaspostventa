@@ -1,0 +1,201 @@
+.sidebar {
+  background: #000000;
+  color: white;
+  width: 250px;
+  height: 100vh; /* Ocupar toda la altura de la pantalla */
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: width 0.3s;
+  overflow-y: auto; /* Permitir desplazamiento vertical */
+  overflow-x: hidden; /* Evitar scroll horizontal */
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+/* Para ocultar la barra de desplazamiento en navegadores modernos */
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 5px;
+}
+
+
+.sidebar.closed {
+  width: 60px; /* Reducir el tamaño cuando esté cerrado */
+}
+
+/* Botón de toggle */
+.toggle-btn {
+  background: #444;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Sidebar - Lista de menús */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  padding: 10px;
+  text-align: left; /* Asegura la alineación a la izquierda */
+}
+
+/* Estilos de los elementos del menú principal */
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Alinea los elementos a la izquierda */
+  width: 100%;
+  cursor: pointer;
+  gap: 10px; /* Espaciado entre icono y texto */
+  padding: 10px;
+}
+
+.sidebar.closed .menu-item {
+  justify-content: center; /* Centrar los íconos */
+}
+
+.sidebar.closed .menu-link span {
+  display: none; /* Ocultar los textos cuando está cerrado */
+}
+
+.sidebar.closed .submenu {
+  display: none; /* Ocultar los submenús cuando el sidebar está cerrado */
+}
+
+/* Enlaces del menú */
+.menu-link {
+  flex-grow: 1; /* Hace que el texto ocupe el espacio disponible */
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espaciado entre icono y texto */
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espaciado entre icono y texto */
+}
+
+.sidebar ul li a:hover {
+  background: #555;
+}
+
+/* Iconos del menú desplegable */
+.submenu-toggle {
+  font-size: 14px;
+}
+
+/* Estilos de los submenús */
+/* Submenús */
+.submenu {
+  padding-left: 20px;
+}
+
+.sidebar.open .submenu {
+  display: block;
+}
+
+.submenu li {
+  padding: 5px 10px;
+}
+
+/* Contenido principal */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Ajuste del contenedor principal */
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* Cuando el sidebar está cerrado */
+.sidebar.closed ~ .main-content {
+  margin-left: 60px;
+}
+
+/* Ajustes de la estructura principal */
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Ajuste del contenedor cuando el sidebar está cerrado */
+.sidebar.closed ~ .content {
+  margin-left: 60px;
+  width: calc(100% - 60px);
+}
+
+/* Navbar.css */
+
+/* Hover sobre el ícono cuando el menú está contraído */
+.sidebar.closed .menu-item:hover .menu-link {
+  color: #007bff; /* Puedes cambiar el color al que desees */
+  cursor: pointer;
+}
+
+/* Estilo cuando el menú está cerrado */
+.sidebar.closed .menu-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover sobre el ícono en modo abierto (para cambiar el color de los íconos cuando el sidebar está abierto) */
+.sidebar.open .menu-item:hover .menu-link {
+  color: #007bff;
+}
+
+
+
+
+
+
+/* Estilo para el menú activo */
+.menu-item.active {
+  background: linear-gradient(45deg, #007bff, #0056b3) !important; /* Fondo con gradiente elegante */
+  border-left: 5px solid #ffffff; /* Línea de borde para resaltar */
+  color: white;
+}
+
+/* Asegurar que el texto y los iconos se mantengan visibles en el menú activo */
+.menu-item.active .menu-link {
+  color: white !important;
+}
+
+
+/* Estilo para el menú activo */
+.menu-item.active {
+  background: #007bff; /* Fondo azul elegante */
+  color: white; /* Color de texto blanco */
+  border-left: 5px solid #ffffff; /* Borde para resaltar el menú activo */
+}
+
+/* Asegurar que los enlaces dentro del menú activo tengan texto blanco */
+.menu-item.active .menu-link {
+  color: white;
+}
+
+/* Cambio de color de fondo en el hover del elemento activo */
+.menu-item.active:hover {
+  background: #0056b3; /* Cambiar el color al pasar el ratón sobre el activo */
+}

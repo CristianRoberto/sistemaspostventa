@@ -1,0 +1,71 @@
+.ingresoContenedorSecuendario{
+  width: 70%;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+
+
+}  
+
+.ingresoContenedorSecuendario h2{
+  font-family: 'Montserrat', sans-serif !important; /* Fuente para los títulos */
+  font-weight: 500;
+
+}
+
+label {
+  font-family: 'Montserrat', sans-serif !important;
+  display: flex;               /* Usamos flexbox para facilitar el centrado */
+  justify-content: center;     /* Centrado horizontal */
+  align-items: center;         /* Centrado vertical */
+  height: 100%;                /* Asegura que el contenedor tenga suficiente altura */
+}
+
+  
+  .productoForm .formGroup {
+    margin-bottom: 1.5rem;
+    margin-top: 10px !important;
+
+    font-family: 'Montserrat', sans-serif !important; /* Fuente para los títulos */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    font-weight: bold !important;
+  }
+  
+  .productoForm .formGroup label {
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif !important; /* Fuente para los títulos */
+
+  }
+  
+  .productoForm .formGroup input,
+  .productoForm .formGroup textarea,
+  .productoForm .formGroup select {
+    font-family: 'Montserrat', sans-serif !important; /* Fuente para los títulos */
+    width: 100%;
+    padding: 0.8rem;
+  }
+  
+  .productoForm .imagePreview img {
+    border-radius: 5px;
+  }
+  
+  .productoForm button {
+    background-color: #007bff;
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif !important; /* Fuente para los títulos */
+
+  }
+  
+  .productoForm button:hover {
+    background-color: #0056b3;
+    font-family: 'Montserrat', sans-serif !important; /* Fuente para los títulos */
+
+  }
+  

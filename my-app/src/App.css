@@ -1,0 +1,115 @@
+#root {
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Aplicar fuente Montserrat a todo el proyecto */
+/* Aplicar fuente Montserrat a todo el proyecto, incluidos los <label> */
+*,
+label {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+/* Global styles */
+body {
+  font-family: 'Montserrat', sans-serif !important;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff81;
+  
+}
+
+
+.headertabla{
+  background: yellow !important;
+  font-family: 1px !important;
+}
+
+
+/* styles.css */
+
+/* Estilos globales para todos los IconButton */
+
+
+.MuiIconButton-root:hover {
+  background-color: rgba(8, 8, 8, 0.3) !important; /* Color de fondo en hover */
+  
+}
+
+
+/* Contenedor principal, ajustado al sidebar */
+.content {
+  margin-left: 250px;
+  padding: 20px;
+  width: calc(100% - 250px);
+  transition: margin-left 0.3s;
+}
+
+/* Estilo específico para los inputs nativos y select de Material-UI */
+/* Estilo específico para los inputs y selects */
+input[type="text"], input[type="password"], input[type="email"], select {
+  padding: 10px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin: 0px 0 !important;
+
+}
+
+.MuiOutlinedInput-input  {
+  padding: 15px !important;
+  margin: 4px 0 !important;
+}
+
+/* Efecto cuando el input o select está activo */
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, select:focus {
+  border: 2px solid rgb(0, 153, 255);
+  outline: none;
+}
+
+
+
+
+
+.botonguardar {
+  background-color: #4caf50; /* Color verde */
+  font-size: 15px !important;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  width: 50% !important;
+  border-radius: 50px !important;
+  height: 45px !important;
+}
+
+.botonguardar:hover {
+  background-color: #45a049; /* Cambio de color cuando se pasa el mouse */
+  color: black;
+}
+.botonguardar {
+  background-color: #4caf50; /* Color verde */
+  font-size: 15px !important;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 50px !important; /* Borde redondeado */
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Añadimos transición al efecto de sombra y al hover */
+  width: 50% !important;
+  height: 45px !important;
+  border: none; /* Sin borde por defecto */
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5) !important; /* Sombra sutil para el borde */
+}
+
+.botonguardar:hover {
+  background-color: #45a049; /* Cambia de color cuando el botón se presiona */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Aumenta la sombra cuando se pasa el mouse */
+  transform: translateY(-2px); /* Efecto de levantar el botón */
+}
+
+.botonguardar:active {
+  background-color: #388e3c; /* Color aún más oscuro cuando se presiona */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra vuelve al estado inicial */
+  transform: translateY(0); /* El botón vuelve a su posición original */
+}
