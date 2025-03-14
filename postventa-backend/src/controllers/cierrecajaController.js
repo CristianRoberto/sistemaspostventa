@@ -13,6 +13,8 @@ const Empleado = require('../models/empleado');
 const obtenerCierreCaja = async (req, res) => {
     try {
         const cierresCaja = await CierreCaja.findAll({
+            order: [["id", "DESC"]],
+
             include: [
                 {
                     model: Empleado, // Relación con Cliente

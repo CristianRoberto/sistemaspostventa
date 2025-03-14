@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Card, CardContent, Typography, Box, CircularProgress } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
+import CapitalDisponibleCard from '../components/CapitalDisponibleCard';
 
 
 interface VentasData {
     total: number;
     mensuales: { mes: string; ventas: number }[];
     diarias: number;
-  }
+}
 
 // interface VentasData {
 //     total: number;
@@ -46,7 +47,7 @@ const Dashboard = () => {
                     { mes: 'Mayo', ventas: 3800 },
                 ],
                 diarias: 1200, // Ventas del día (simulado)
-              });
+            });
 
             setInventarios({
                 disponibles: 1500,
@@ -74,16 +75,22 @@ const Dashboard = () => {
     }
 
     return (
+
+
         <Box sx={{ flexGrow: 1, padding: 3 }}>
+
+            <CapitalDisponibleCard />
+            <br></br>
             <Grid container spacing={3}>
                 {[
-                  { title: 'Ventas Totales', value: `$${ventas?.total.toLocaleString()} USD`, color: '#4CAF50' },
-                  { title: 'Ventas del Mes', value: `$${ventas?.mensuales[ventas?.mensuales.length - 1]?.ventas.toLocaleString()} USD`, color: '#FF9800' },
-                  { title: 'Ventas del Día', value: `$${ventas?.diarias.toLocaleString()} USD`, color: '#2196F3' },
-                  { title: 'Clientes Activos', value: clientes?.activos ?? 0, color: '#9C27B0' },
-                  { title: 'Inventario Disponible', value: `${inventarios?.disponibles ?? 0} productos`, color: '#009688' },
-                  { title: 'Empleados Activos', value: empleados?.activos ?? 0, color: '#795548' }
-                  
+
+                    { title: 'Ventas Totales', value: `$${ventas?.total.toLocaleString()} USD`, color: 'gray' },
+                    { title: 'Ventas del Mes', value: `$${ventas?.mensuales[ventas?.mensuales.length - 1]?.ventas.toLocaleString()} USD`, color: '#FF9800' },
+                    { title: 'Ventas del Día', value: `$${ventas?.diarias.toLocaleString()} USD`, color: '#2196F3' },
+                    { title: 'Clientes Activos', value: clientes?.activos ?? 0, color: '#9C27B0' },
+                    { title: 'Inventario Disponible', value: `${inventarios?.disponibles ?? 0} productos`, color: '#009688' },
+                    { title: 'Empleados Activos', value: empleados?.activos ?? 0, color: '#795548' }
+
                 ].map((kpi, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
                         <Card sx={{ backgroundColor: kpi.color, color: 'white' }}>

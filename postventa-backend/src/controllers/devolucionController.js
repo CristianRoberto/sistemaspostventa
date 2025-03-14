@@ -37,41 +37,67 @@ const obtenerDevolucion = async (req, res) => {
   }
 };
 
-
-
-
-
 const crearDevolucion = async (req, res) => {
   try {
+    console.log('Iniciando proceso de devolución...');
+    console.log('Datos recibidos en el request:', req.body);
+
     const { monto_devolucion, motivo_devolucion, cantidad, venta_id, producto_id } = req.body;
 
     // Validación de campos requeridos
-    if (!monto_devolucion || !motivo_devolucion || !cantidad || !venta_id || !producto_id) {
-      return res.status(400).json({ error: 'Todos los campos son requeridos.' });
+   
+    if (!monto_devolucion) {
+      console.warn('Validación fallida: El campo monto_devolucion es requerido.');
+      return res.status(400).json({ error: 'El campo monto_devolucion es requerido.' });
     }
-
+    
+    if (!motivo_devolucion) {
+      console.warn('Validación fallida: El campo motivo_devolucion es requerido.');
+      return res.status(400).json({ error: 'El campo motivo_devolucion es requerido.' });
+    }
+    
+    if (!cantidad) {
+      console.warn('Validación fallida: El campo cantidad es requerido.');
+      return res.status(400).json({ error: 'El campo cantidad es requerido.' });
+    }
+    
+    if (!venta_id) {
+      console.warn('Validación fallida: El campo venta_id es requerido.');
+      return res.status(400).json({ error: 'El campo venta_id es requerido.' });
+    }
+    
+    if (!producto_id) {
+      console.warn('Validación fallida: El campo producto_id es requerido.');
+      return res.status(400).json({ error: 'El campo producto_id es requerido.' });
+    }
+    
     // Validación para evitar devoluciones con monto negativo o cero
     if (monto_devolucion <= 0) {
+      console.warn('Validación fallida: El monto de la devolución debe ser mayor a cero.');
       return res.status(400).json({ error: 'El monto de la devolución debe ser mayor a cero.' });
     }
 
     // Buscar el inventario para ajustar el stock
+    console.log('Buscando inventario para el producto ID:', producto_id);
     const inventario = await Inventario.findOne({ where: { producto_id } });
     if (!inventario) {
+      console.error('Error: Inventario no encontrado para el producto.');
       return res.status(404).json({ error: 'Inventario no encontrado para el producto.' });
     }
 
     console.log('Stock actual antes de la devolución:', inventario.cantidad);
 
     // Ajustar el inventario sumando las unidades devueltas
-    inventario.cantidad += cantidad;  // Aumentamos el stock
+    inventario.cantidad += cantidad;
     await inventario.save();
 
     console.log('Nuevo stock después de la devolución:', inventario.cantidad);
 
     // Buscar la venta para ajustar el total de ventas del día
+    console.log('Buscando venta con ID:', venta_id);
     const venta = await Venta.findByPk(venta_id);
     if (!venta) {
+      console.error('Error: Venta no encontrada.');
       return res.status(404).json({ error: 'Venta no encontrada.' });
     }
 
@@ -85,20 +111,21 @@ const crearDevolucion = async (req, res) => {
 
     // Si se devuelve el dinero al cliente, restar del capital disponible
     if (monto_devolucion) {
-      const capital = await Capital.findOne();  // Obtiene el primer registro de capital
+      console.log('Buscando capital disponible...');
+      const capital = await Capital.findOne();
       if (!capital) {
+        console.error('Error: Capital no encontrado.');
         return res.status(404).json({ error: 'Capital no encontrado.' });
       }
-      
+
       console.log('Capital antes de la devolución:', capital.monto);
-
-      capital.monto -= monto_devolucion;  // Ajustar el capital
-      await capital.save();  // Guardar el nuevo monto de capital
-
+      capital.monto -= monto_devolucion;
+      await capital.save();
       console.log('Nuevo capital después de la devolución:', capital.monto);
     }
 
     // Crear la devolución en la base de datos
+    console.log('Registrando la devolución en la base de datos...');
     const nuevaDevolucion = await Devolucion.create({
       monto_devolucion,
       motivo_devolucion,
@@ -107,7 +134,7 @@ const crearDevolucion = async (req, res) => {
       producto_id,
     });
 
-    console.log('Devolución creada:', nuevaDevolucion);
+    console.log('Devolución creada con éxito:', nuevaDevolucion);
 
     return res.status(201).json(nuevaDevolucion);
   } catch (error) {

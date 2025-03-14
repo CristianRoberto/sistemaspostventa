@@ -1,15 +1,17 @@
-const { Router } = require('express');
-const router = Router();
-const multer = require('multer');
-const path = require('path');
-const { obtenerEmpleado, agregarEmpleado, eliminarEmpleadoId , actualizarempleadoPorId} = require('../controllers/empleadoController');
+const express = require("express");
+const router = express.Router();
+const { 
+    obtenerEmpleado, 
+    agregarEmpleado, 
+    eliminarEmpleadoId, 
+    actualizarempleadoPorId, 
+    obtenerEmpleadoPorCedula 
+} = require("../controllers/empleadoController");
 
-
-
-//router Empleados
-router.get('/empleado', obtenerEmpleado);
-router.post('/empleado',  agregarEmpleado); // Usa el middleware de multer aquí
-router.delete('/empleado/:empleado_id', eliminarEmpleadoId)
-router.put('/empleado/:empleado_id', actualizarempleadoPorId)
+router.get('/empleado', obtenerEmpleado); // Obtener todos los empleados
+router.get('/empleado/:cedula', obtenerEmpleadoPorCedula); // Buscar empleado por cédula
+router.post('/empleado', agregarEmpleado); // Agregar nuevo empleado
+router.delete('/empleado/:empleado_id', eliminarEmpleadoId); // Eliminar empleado por ID
+router.put('/empleado/:empleado_id', actualizarempleadoPorId); // Actualizar empleado por ID
 
 module.exports = router;

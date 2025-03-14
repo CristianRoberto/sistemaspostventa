@@ -125,16 +125,25 @@ const Carrito: React.FC = () => {
     setLoading(true); // Activar loading
 
 
+    const usuarioSesion = JSON.parse(localStorage.getItem("UsuarioSesion"));
 
+    // Verificar que empleado_id no sea null o undefined y forzar que sea string
+    const empleadoId = usuarioSesion?.empleado_id !== null && usuarioSesion?.empleado_id !== undefined
+      ? String(usuarioSesion.empleado_id)  // Convertirlo en string si es válido
+      : "0";  // O cualquier valor por defecto que desees (ej. "0")
 
     const orden = {
       cliente_id: clienteSeleccionado?.cliente_id,
-      empleado_id: 39,
+      empleado_id: empleadoId,  // Ahora empleado_id siempre será un string
       productos: carrito.map((producto) => ({ producto_id: producto.producto_id, cantidad: producto.cantidad })),
       metodo_pago: selectedPaymentMethod,
-      estado: "pagada",  // Cambié el estado a "pagada" ya que la venta es exitosa
+      estado: "pagada",
       enviar_factura: enviarFactura,
     };
+
+    console.log(orden);
+
+
 
     try {
       const response = await axios.post("http://localhost:5000/ventas/", orden, {

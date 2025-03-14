@@ -60,6 +60,11 @@ app.use(require('./src/routes/devolucionRoutes.js'));
 
 app.use(require('./src/routes/pagosRoutes.js'));
 
+app.use(require('./src/routes/capitalRoutes.js'));
+
+app.use(require('./src/routes/utilidadDiariaRoutes.js'));
+
+
 
 
 

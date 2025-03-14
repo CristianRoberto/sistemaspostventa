@@ -1,4 +1,9 @@
 const Cliente = require('../models/cliente');
+
+
+const TransaccionPuntos = require('../models/TransaccionPuntos');
+
+
 const { Op } = require('sequelize');
 
 const dayjs = require('dayjs');
@@ -119,10 +124,6 @@ const agregarCliente = async (req, res) => {
   }
 };
 
-module.exports = { agregarCliente };
-
-
-
 
 // Obtener un Cliente por ID
 const obtenerClientePorId = async (req, res) => {
@@ -159,6 +160,7 @@ const actualizarClientePorId = async (req, res) => {
 
     const {
       nombre,
+      apellidos,
       email,
       telefono,
       direccion,
@@ -170,7 +172,8 @@ const actualizarClientePorId = async (req, res) => {
       total_compras,
       observaciones,
       nivel_satisfaccion,
-      cantidad_reclamos
+      cantidad_reclamos,
+      total_puntos_acumulados
     } = req.body;
 
     // Validar formato de email
@@ -191,9 +194,10 @@ const actualizarClientePorId = async (req, res) => {
       }
     }
 
-    // Actualizar Cliente
-    await clienteExistente.update({
+    // Si nivel_satisfaccion o cantidad_reclamos están vacíos, asignarles un valor por defecto
+    const updatedData = {
       nombre,
+      apellidos,  // Asegúrate de incluir este campo si es necesario
       email,
       telefono,
       direccion,
@@ -204,9 +208,16 @@ const actualizarClientePorId = async (req, res) => {
       ultima_compra,
       total_compras,
       observaciones,
-      nivel_satisfaccion,
-      cantidad_reclamos
-    });
+      nivel_satisfaccion: nivel_satisfaccion || 0,
+      cantidad_reclamos: cantidad_reclamos || 0,
+      total_puntos_acumulados  // Incluye este campo si lo necesitas
+    };
+
+
+    // Actualizar Cliente
+    await clienteExistente.update(updatedData);
+    console.log("Cliente actualizado:", clienteExistente);
+
 
     return res.status(200).json({ mensaje: 'Cliente actualizado exitosamente', cliente: clienteExistente });
   } catch (error) {
@@ -215,26 +226,82 @@ const actualizarClientePorId = async (req, res) => {
   }
 };
 
+
+
+
+
 // Eliminar un Cliente por ID
 const eliminarClientePorId = async (req, res) => {
   try {
     const { cliente_id } = req.params;
+
+    // Validar si el cliente_id está presente en los parámetros
     if (!cliente_id) {
       return res.status(400).json({ error: 'El ID del Cliente es requerido' });
     }
 
+    // Buscar el cliente en la base de datos
     const cliente = await Cliente.findByPk(cliente_id);
     if (!cliente) {
       return res.status(404).json({ error: 'Cliente no encontrado' });
     }
 
+    // Verificar si el cliente tiene registros dependientes (por ejemplo, transacciones de puntos)
+    const transacciones = await TransaccionPuntos.findAll({
+      where: { cliente_id },
+    });
+
+    if (transacciones.length > 0) {
+      return res.status(400).json({
+        error: 'El cliente tiene transacciones de puntos asociadas. No se puede eliminar.',
+      });
+    }
+
+    // Realizar la eliminación del cliente
     await cliente.destroy();
+
     return res.status(200).json({ mensaje: 'Cliente eliminado correctamente' });
+
   } catch (error) {
     console.error('Error al eliminar el Cliente:', error);
-    return res.status(500).json({ error: 'Error al eliminar el Cliente', detalles: error.message });
+
+    // Capturar error por violación de clave foránea
+    if (error.name === "SequelizeForeignKeyConstraintError") {
+      return res.status(400).json({
+        error: "No se puede eliminar el cliente debido a una restricción de clave foránea.",
+      });
+    }
+
+    // Capturar error si no se encuentra la transacción o hay un error con la consulta
+    if (error.name === "SequelizeDatabaseError") {
+      return res.status(500).json({
+        error: 'Error de base de datos al eliminar el cliente. Verifique las dependencias.',
+        detalles: error.message,
+      });
+    }
+
+    // Capturar errores generales y enviar un mensaje genérico
+    return res.status(500).json({
+      error: 'Error inesperado al eliminar el Cliente',
+      detalles: error.message
+    });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Eliminar todos los Clientes (solo Admin)
 const eliminarClientes = async (req, res) => {

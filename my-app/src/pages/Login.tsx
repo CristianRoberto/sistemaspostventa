@@ -4,7 +4,7 @@ import "../css/Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import { TextField, InputAdornment } from "@mui/material";
+import { TextField, InputAdornment, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { Lock, Email } from "@mui/icons-material";
 
 const cookies = new Cookies();
@@ -15,6 +15,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [hover, setHover] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false); // Estado para controlar el modal
 
   // Estados de validación para los inputs
   const [correoError, setCorreoError] = useState<string | null>(null);
@@ -45,23 +46,27 @@ const Login: React.FC = () => {
   const iniciarSesion = async () => {
     setError(null);
     setLoading(true);
+    setOpenModal(true);  // Mostrar el modal de carga
 
     // Validaciones antes de enviar
     if (!form.correo || !form.contrasena) {
       setError("Todos los campos son obligatorios.");
       setLoading(false);
+      setOpenModal(false);  // Cerrar el modal si hay error
       return;
     }
 
     if (!validarCorreo(form.correo)) {
       setError("El correo ingresado no es válido.");
       setLoading(false);
+      setOpenModal(false);  // Cerrar el modal si hay error
       return;
     }
 
     if (!validarContrasena(form.contrasena)) {
       setError("La contraseña debe tener al menos 6 caracteres.");
       setLoading(false);
+      setOpenModal(false);  // Cerrar el modal si hay error
       return;
     }
 
@@ -79,12 +84,18 @@ const Login: React.FC = () => {
         cookies.set("correo", userData.correo, { path: "/" });
         cookies.set("rol", userData.rol, { path: "/" });
 
+        // Crear el objeto usuario con la propiedad empleado_id, que puede estar vacío
+        const usuario = {
+          usuario: userData,
+          rol: userData.rol,
+          empleado_id: userData.empleado_id || "", // Si no tiene empleado_id, se guarda vacío
+        };
+
         // Guardar usuario en localStorage
-        const usuario = { usuario: userData, rol: userData.rol };
         localStorage.setItem("UsuarioSesion", JSON.stringify(usuario));
 
-        alert(`Bienvenido ${userData.correo}`);
-        window.location.href = "./home";
+        // Redirigir después de la autenticación exitosa
+        navigate("/home"); // Usar navigate para la redirección sin recarga de página
       } else {
         setError("El usuario o la contraseña son incorrectos.");
       }
@@ -100,14 +111,15 @@ const Login: React.FC = () => {
       }
     } finally {
       setLoading(false);
+      setOpenModal(false);  // Cerrar el modal después de procesar
     }
   };
 
   useEffect(() => {
     if (cookies.get("identificacionusuario")) {
-      window.location.href = "./menu";
+      navigate("/menu"); // Si el usuario ya está logueado, redirigir automáticamente sin recargar
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="login-container">
@@ -160,8 +172,12 @@ const Login: React.FC = () => {
           />
         </div>
 
-        <button className="btn btn-primary" onClick={iniciarSesion} disabled={loading}>
-          {loading ? "Iniciando sesión..." : "INICIAR SESIÓN"}
+        <button
+          className="btn btn-primary"
+          onClick={iniciarSesion}
+          disabled={loading}
+        >
+          {loading ? <CircularProgress size={24} color="inherit" /> : "INICIAR SESIÓN"}
         </button>
 
         <div className="register-button-container">
@@ -179,6 +195,17 @@ const Login: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* Modal de Carga */}
+      <Dialog open={openModal} disableBackdropClick disableEscapeKeyDown>
+        <DialogTitle>Iniciando sesión...</DialogTitle>
+        <DialogContent>
+          <CircularProgress />
+        </DialogContent>
+        <DialogActions>
+          {/* Puedes agregar algún botón de cancelación si lo deseas */}
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

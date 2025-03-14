@@ -64,36 +64,51 @@ const IngresarCompras = () => {
         console.log("Campo cambiado:", e.target.name, "Valor:", e.target.value);
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         console.log("Datos de la compra a enviar:", compra);
 
         // Validación antes de enviar
         if (!compra.producto_id || !compra.id_proveedor || !compra.cantidad || !compra.precio_compra) {
+            console.warn("Error: Todos los campos son obligatorios.");
             setError("Todos los campos son obligatorios.");
             return;
         }
 
         try {
+            console.log("Enviando datos al servidor...");
             const response = await axios.post("http://localhost:5000/compraproducto/", compra);
-            console.log("Respuesta del servidor:", response);
+
+            console.log("Respuesta completa del servidor:", response);
+            console.log("Datos recibidos:", response.data);
+
             setMensaje("Compra registrada correctamente.");
+
+            // Reiniciar formulario
             setCompra({
                 numero_factura: "",
-                producto_id: null as any, // Cambio a any
+                producto_id: null,
                 cantidad: "",
                 precio_compra: "",
-                id_proveedor: null as any // Cambio a null
+                id_proveedor: null
             });
+
+            console.log("Formulario reseteado.");
         } catch (err) {
             console.error("Error al registrar la compra:", err);
+
             if (axios.isAxiosError(err) && err.response) {
+                console.error("Respuesta del servidor con error:", err.response);
                 setError(err.response?.data?.error || "Error desconocido al registrar la compra.");
             } else {
                 setError("Hubo un error al registrar la compra.");
             }
         }
     };
+
+
 
     return (
         <Container>
@@ -113,7 +128,7 @@ const IngresarCompras = () => {
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={3}>
                         {/* Número de Factura */}
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={12}>
                             <TextField
                                 fullWidth
                                 label="Número de Factura"
@@ -146,6 +161,26 @@ const IngresarCompras = () => {
                             />
                         </Grid>
 
+                        {/* Proveedor */}
+                        <Grid item xs={12} sm={6}>
+                            <Autocomplete
+                                fullWidth
+                                value={proveedores.find((proveedor) => proveedor.id_proveedores === compra.id_proveedor) || null}
+                                onChange={(event, newValue) => {
+                                    console.log("Proveedor seleccionado:", newValue);
+                                    setCompra({
+                                        ...compra,
+                                        id_proveedor: newValue ? newValue.id_proveedores : null, // Asignar null si no hay selección
+                                    });
+                                }}
+                                options={proveedores}
+                                getOptionLabel={(option) => option.nombre}
+                                renderInput={(params) => <TextField {...params} label="Proveedor" required />}
+                                isOptionEqualToValue={(option, value) => option.id_proveedores === value.id_proveedores}
+                            />
+
+                        </Grid>
+
                         {/* Cantidad */}
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -162,7 +197,7 @@ const IngresarCompras = () => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label="Precio de Compra"
+                                label="Precio Unitario"
                                 name="precio_compra"
                                 value={compra.precio_compra}
                                 onChange={handleChange}
@@ -170,27 +205,7 @@ const IngresarCompras = () => {
                             />
                         </Grid>
 
-                        {/* Proveedor */}
-                        <Grid item xs={12} sm={6}>
-                            <Autocomplete
-                                fullWidth
-                                value={proveedores.find((proveedor) => proveedor.id_proveedores === compra.id_proveedor) || null}
-                                onChange={(event, newValue) => {
-                                    if (newValue) {
-                                        console.log("Proveedor seleccionado:", newValue);
-                                        setCompra({
-                                            ...compra,
-                                            id_proveedor: newValue.id_proveedores, // Usamos id_proveedores
-                                        });
-                                    }
-                                }}
-                                options={proveedores}
-                                getOptionLabel={(option) => option.nombre}
-                                renderInput={(params) => <TextField {...params} label="Proveedor" required />}
-                                isOptionEqualToValue={(option, value) => option.id_proveedores === value.id_proveedores} // Compara por id_proveedores
-                                freeSolo
-                            />
-                        </Grid>
+
                     </Grid>
 
                     {/* Botón Guardar */}

@@ -33,4 +33,21 @@ const crearOActualizarCapital = async (req, res) => {
   }
 };
 
-module.exports = { crearOActualizarCapital };
+
+
+
+// Obtener todos los Categorias
+const verCapital = async (req, res) => {
+  try {
+    const capital = await Capital.findAll();
+    // console.error('resultado obtenidos es ', Categorias);
+    return res.status(200).json(capital);
+  } catch (error) {
+    console.error('Error al obtener el capital:', error);
+    return res.status(500).json({ error: 'Error al obtener el capital' });
+  }
+};
+
+
+
+module.exports = { crearOActualizarCapital,  verCapital};

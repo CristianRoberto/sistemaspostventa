@@ -147,23 +147,26 @@ const Ventas: React.FC = () => {
                 </InputAdornment>
               ),
             }}
-            // sx={{
-            //   width: "100%",
-            //   // "& .MuiOutlinedInput-root": {
-            //   //   padding: "0", // Asegura que el padding del input sea el adecuado
-  
-            //   // },
-            //   "& .MuiOutlinedInput-input": {
-            //     padding: "0", // Asegura que el padding del input sea el adecuado
-            //     boxSizing: "border-box", // Asegura que los estilos respeten el tamaño total
-            //     border: "none",
-            //   },
-            // }}
+          // sx={{
+          //   width: "100%",
+          //   // "& .MuiOutlinedInput-root": {
+          //   //   padding: "0", // Asegura que el padding del input sea el adecuado
+
+          //   // },
+          //   "& .MuiOutlinedInput-input": {
+          //     padding: "0", // Asegura que el padding del input sea el adecuado
+          //     boxSizing: "border-box", // Asegura que los estilos respeten el tamaño total
+          //     border: "none",
+          //   },
+          // }}
           />
         </Grid>
       </Grid>
 
-      <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
+      <TableContainer component={Paper} 
+      sx={{
+        padding: "20px",
+      }}>
         <Table>
           <TableHead>
             <TableRow className="headertabla">
@@ -179,7 +182,9 @@ const Ventas: React.FC = () => {
               <TableCell sx={{ fontWeight: 600 }}>FechaVenta</TableCell>
               <TableCell sx={{ fontWeight: 600 }}>Acciones</TableCell>
             </TableRow>
+
           </TableHead>
+
 
           <TableBody>
             {ventasFiltradas.length === 0 ? (

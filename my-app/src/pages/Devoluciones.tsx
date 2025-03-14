@@ -349,33 +349,58 @@ const Devoluciones: React.FC = () => {
                     },
                 }}
             >
-                <DialogTitle>Detalles de la Devolución</DialogTitle>
+                <DialogTitle style={{ fontWeight: 600 }}>Detalles de la Devolución</DialogTitle>
                 <DialogContent>
                     {selectedDevolucion && (
                         <div>
-                            <Typography variant="h6">ID de Devolución: {selectedDevolucion.devolucion_id}</Typography>
-                            <Typography variant="h6">Venta ID: {selectedDevolucion.venta_id}</Typography>
-                            <Typography variant="h6">Producto: {selectedDevolucion.producto.nombre}</Typography>
-                            <Typography variant="body1">Descripción del Producto: {selectedDevolucion.producto.descripcion}</Typography>
-                            <Typography variant="body1">Precio del Producto: {selectedDevolucion.producto.precio}</Typography>
-                            {/* <Typography variant="body1">Categoría del Producto: {selectedDevolucion.producto.categoria_id}</Typography> */}
-
-
-                            <Typography variant="body1">
+                            <Typography variant="h6" sx={{ fontWeight: '600' }}>
+                                ID de Devolución: {selectedDevolucion.devolucion_id}
+                            </Typography>
+                            <Typography variant="h6" sx={{ fontWeight: '600' }}>
+                                Venta ID: {selectedDevolucion.venta_id}
+                            </Typography>
+                            <Typography variant="h6" sx={{ fontWeight: '600' }}>
+                                Producto: {selectedDevolucion.producto.nombre}
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: '500' }}>
+                                Descripción del Producto: {selectedDevolucion.producto.descripcion}
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: '500' }}>
+                                Precio del Producto: {selectedDevolucion.producto.precio}
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: '500' }}>
                                 Categoría del Producto: {selectedDevolucion.producto.categoria.nombre}
                             </Typography>
-
-
-                            <Typography variant="body1">Motivo de Devolución: {selectedDevolucion.motivo_devolucion}</Typography>
-                            <Typography variant="body1">Cantidad Devuelta: {selectedDevolucion.cantidad}</Typography>
-                            <Typography variant="body1">Monto de Devolución: {selectedDevolucion.monto_devolucion}</Typography>
-                            <Typography variant="body1">Fecha de Devolución: {formatFecha(selectedDevolucion.fecha_devolucion)}</Typography>
-                            <Typography variant="h6" sx={{ marginTop: 2 }}>Detalles de la Venta</Typography>
-                            <Typography variant="body1">Total Neto de la Venta: {selectedDevolucion.venta.total_neto}</Typography>
-                            <Typography variant="body1">Total de la Venta: {selectedDevolucion.venta.total}</Typography>
-                            <Typography variant="body1">Método de Pago: {selectedDevolucion.venta.metodo_pago}</Typography>
-                            <Typography variant="body1">Estado de la Venta: {selectedDevolucion.venta.estado}</Typography>
-                            <Typography variant="body1">Fecha de la Venta: {formatFecha(selectedDevolucion.venta.fecha)}</Typography>
+                            <Typography variant="body1" sx={{ fontWeight: '500' }}>
+                                Motivo de Devolución: {selectedDevolucion.motivo_devolucion}
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: '500' }}>
+                                Cantidad Devuelta: {selectedDevolucion.cantidad}
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: '500' }}>
+                                Monto de Devolución: {selectedDevolucion.monto_devolucion}
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: '500' }}>
+                                Fecha de Devolución: {formatFecha(selectedDevolucion.fecha_devolucion)}
+                            </Typography>
+                            <Typography variant="h6" sx={{ marginTop: 2, fontWeight: '600' }}>
+                                Detalles de la Venta
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: '500' }}>
+                                Total Neto de la Venta: {selectedDevolucion.venta.total_neto}
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: '500' }}>
+                                Total de la Venta: {selectedDevolucion.venta.total}
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: '500' }}>
+                                Método de Pago: {selectedDevolucion.venta.metodo_pago}
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: '500' }}>
+                                Estado de la Venta: {selectedDevolucion.venta.estado}
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: '500' }}>
+                                Fecha de la Venta: {formatFecha(selectedDevolucion.venta.fecha)}
+                            </Typography>
                         </div>
                     )}
                 </DialogContent>
@@ -385,6 +410,7 @@ const Devoluciones: React.FC = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
         </div>
     );
 };

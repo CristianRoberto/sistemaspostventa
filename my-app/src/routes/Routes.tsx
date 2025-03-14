@@ -30,6 +30,9 @@ import ListaCompras from "../pages/ListaCompras";
 import IngresarCompras from "../pages/IngresarCompras";
 import Devoluciones from "../pages/Devoluciones";
 import IngresarDevolucion from "../pages/IngresarDevolucion";
+import AddPagoAdicional from "../pages/AddPagoAdicional";
+import UtilidadForm from "../pages/UtilidadForm";
+import ListadoUtilidad from "../pages/ListadoUtilidad";
 
 
 const AppRoutes: React.FC = () => {
@@ -68,6 +71,16 @@ const AppRoutes: React.FC = () => {
         <Route path="/compras/nueva" element={<IngresarCompras />} />
         <Route path="/devoluciones/historial" element={<Devoluciones />} />
         <Route path="/devoluciones/gestionar" element={<IngresarDevolucion />} />
+
+        <Route path="/addpagoadicional/" element={<AddPagoAdicional />} />
+
+        <Route path="/utilidad/" element={<UtilidadForm />} />
+
+        <Route path="//utilidad/listado/" element={<ListadoUtilidad />} />
+
+
+
+        
 
       </Route>
     </Routes>

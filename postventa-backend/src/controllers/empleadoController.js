@@ -154,7 +154,25 @@ const actualizarempleadoPorId = async (req, res) => {
     }
 };
 
+const obtenerEmpleadoPorCedula = async (req, res) => {
+  try {
+      const { cedula } = req.params; // Capturar la cédula de los parámetros de la URL
+      const empleado = await Empleado.findOne({ where: { cedula } });
+
+      if (!empleado) {
+          return res.status(404).json({ error: "Empleado no encontrado" });
+      }
+
+      return res.status(200).json(empleado);
+  } catch (error) {
+      console.error("Error al buscar empleado por cédula:", error);
+      return res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
+
   
 module.exports = {
-    obtenerEmpleado,  agregarEmpleado, eliminarEmpleadoId, actualizarempleadoPorId
+    obtenerEmpleado,  agregarEmpleado, eliminarEmpleadoId, actualizarempleadoPorId,
+    obtenerEmpleadoPorCedula
   };

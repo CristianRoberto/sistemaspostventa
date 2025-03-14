@@ -65,8 +65,8 @@ const Cliente = sequelize.define('Cliente', {
   nivel_satisfaccion: {
     type: DataTypes.INTEGER,
     validate: {
-      min: 1,
-      max: 5,
+      min: 0,
+      max: 10,
     },
   },
   cantidad_reclamos: {

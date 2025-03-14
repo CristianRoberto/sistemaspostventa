@@ -18,6 +18,7 @@ import axios from "axios";
 const IngresarProvedores: React.FC = () => {
   const [proveedor, setProveedor] = useState({
     nombre: "",
+    apellidos_proveedor : "",
     tipo_proveedor: "",
     ruc_cif: "",
     telefono: "",
@@ -108,6 +109,7 @@ const IngresarProvedores: React.FC = () => {
           </Typography>
         )}
 
+<br></br>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
             {/* Nombre */}
@@ -117,6 +119,18 @@ const IngresarProvedores: React.FC = () => {
                 label="Nombre"
                 name="nombre"
                 value={proveedor.nombre}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+
+              {/* Apellidos */}
+              <Grid item xs={12} sm={4}>
+              <TextField
+                fullWidth
+                label="Apellidos"
+                name="apellidos_proveedor"
+                value={proveedor.apellidos_proveedor}
                 onChange={handleChange}
                 required
               />
@@ -252,7 +266,7 @@ const IngresarProvedores: React.FC = () => {
             </Grid>
 
             {/* Condiciones de Entrega */}
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={12}>
               <FormControl fullWidth>
                 <InputLabel>Condiciones de Entrega</InputLabel>
                 <Select
@@ -274,6 +288,8 @@ const IngresarProvedores: React.FC = () => {
             type="submit"
             variant="contained"
             color="primary"
+            className="botonguardar"
+
             fullWidth
             style={{ marginTop: "20px", fontWeight: 600 }}
           >

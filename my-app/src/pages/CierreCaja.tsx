@@ -277,6 +277,8 @@ const CierreCaja = () => {
 
       <Dialog open={openModal} onClose={handleCloseModal}>
         <DialogTitle style={{ background: 'yellow', fontWeight: '600', textAlign: 'center' }}>CERRAR CAJA</DialogTitle>
+        
+        <br></br>
         <DialogContent>
           <TextField
             fullWidth

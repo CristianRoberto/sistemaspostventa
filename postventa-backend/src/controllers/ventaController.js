@@ -6,6 +6,7 @@ const Cliente = require('../models/cliente');
 const Inventario = require('../models/inventario');
 const TransaccionPuntos = require('../models/TransaccionPuntos');
 const Factura = require('../models/factura');
+const Capital = require('../models/capital');
 
 
 
@@ -25,6 +26,8 @@ const obtenerVentas = async (req, res) => {
     console.log('Solicitud de obtener ventas recibida');  // Mensaje inicial para verificar si la solicitud llega
 
     const ventas = await Venta.findAll({
+      order: [["venta_id", "DESC"]],
+
       include: [
         {
           model: Cliente,
@@ -154,6 +157,8 @@ const generarNumeroFactura = (venta_id) => {
 
 
 
+
+
 const crearVenta = async (req, res) => {
   const { cliente_id, empleado_id, productos, metodo_pago, estado, fecha, enviar_factura } = req.body;
   console.log('📌 Datos de la venta recibidos:', req.body);
@@ -165,7 +170,7 @@ const crearVenta = async (req, res) => {
 
   // Verificar si el empleado_id está presente
   if (!empleado_id) {
-    return res.status(400).json({ error: 'El campo "empleado" es obligatorio.' });
+    return res.status(400).json({ error: 'Para realizar una venta debe ser un empleado' });
   }
 
   // Verificar si productos no está vacío y tiene al menos un producto
@@ -263,7 +268,6 @@ const crearVenta = async (req, res) => {
     console.log('🔹 Total de la venta:', total);
     console.log('🔹 IVA total:', impuestoTotal);
 
-
     const transaction = await sequelize.transaction();
     try {
       console.log('🔄 Iniciando transacción...');
@@ -318,9 +322,6 @@ const crearVenta = async (req, res) => {
       );
       console.log(`✅ Transacción de puntos insertada para el cliente con ID: ${cliente_id}`);
 
-
-
-
       // Crear la factura vinculada a la venta
       const factura = await Factura.create(
         {
@@ -344,27 +345,14 @@ const crearVenta = async (req, res) => {
         await enviarFactura(cliente?.email, filePath, venta.venta_id);
       }
 
-      // if (enviar_factura) {
-      //   // Crear la factura vinculada a la venta
-      //   const factura = await Factura.create(
-      //     {
-      //       venta_id: venta.venta_id,
-      //       numero_factura: numeroFactura,
-      //       total,
-      //       impuestos: impuestoTotal,
-      //       estado: estado,
-      //       estado_pago: 'pendiente',
-      //       metodo_pago: metodo_pago
-      //     },
-      //     { transaction }
-      //   );
-      //   console.log(`✅ Factura registrada con éxito. ID: ${factura.factura_id}, Número de factura: ${factura.numero_factura}`);
-
-      //   // Generamos y enviamos la factura
-      //   const filePath = await generarFacturaPDF(factura.numero_factura, cliente, detalles, total, impuestoTotal);
-      //   await enviarFactura(cliente?.email, filePath, venta.venta_id);
-      // }
-
+      // **Actualizar el capital con el monto total de la venta**
+      const capital = await Capital.findOne();
+      if (capital) {
+        await Capital.update(
+          { monto: sequelize.literal(`monto + ${total}`) },
+          { where: {} }  // Suponiendo que solo hay un registro de capital
+        );
+      }
 
       // Confirmamos la transacción
       await transaction.commit();

@@ -10,23 +10,28 @@ const obtenerInventarios = async (req, res) => {
     const inventarios = await Inventario.findAll({
       include: [
         {
-          model: Producto, // Relación con Producto
-          as: 'producto',  // Asegúrate de usar el alias correcto
-          required: true
+          model: Producto,
+          as: "producto",
+          required: false, // Permitir que los registros sin relación sean devueltos
         },
         {
-          model: Empleado, // Relación con Empleado
-          as: 'empleado',  // Usar el alias correcto
-          required: true
+          model: Empleado,
+          as: "empleado",
+          required: false, // Permitir que los registros sin relación sean devueltos
         },
-      ]
+      ],
+      raw: true, // Obtener los datos sin formato de Sequelize
+      nest: true, // Asegurar que las relaciones se estructuren bien
     });
+
+    console.log("Inventarios obtenidos:", inventarios);
     res.json(inventarios);
   } catch (error) {
-    console.error('Error al obtener inventarios:', error);
-    res.status(500).json({ error: 'Error al obtener inventarios' });
+    console.error("Error al obtener inventarios:", error);
+    res.status(500).json({ error: "Error al obtener inventarios" });
   }
 };
+
 
 
 // Obtener un inventario por ID

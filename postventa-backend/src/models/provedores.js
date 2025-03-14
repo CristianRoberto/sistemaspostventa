@@ -15,6 +15,11 @@ const Proveedor = sequelize.define('Proveedor', {
     allowNull: false,
     field: 'nombre',
   },
+  apellidos_proveedor: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    field: 'apellidos_proveedor',
+  },
   tipo_proveedor: {
     type: DataTypes.STRING(50),
     allowNull: true,

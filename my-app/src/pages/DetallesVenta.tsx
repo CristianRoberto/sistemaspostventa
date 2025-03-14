@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Card, CardContent, Typography, Grid, Button, TableContainer, Paper, Table, TableHead, TableCell, TableRow, TableBody } from '@mui/material'; // Importar los componentes de MUI
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Icono de retroceso
 import "../css/DetalleVenta.css";
 
 // Definir las interfaces para los datos
@@ -39,7 +41,7 @@ interface DetalleVenta {
   nombre: string;
   descripcion: string;
   imagenproducto: string;
-  precio: string; // Usamos string porque en la API puede venir como texto
+  precio: string;
   cantidad: number;
   subtotal: number;
   descuento: number;
@@ -55,23 +57,22 @@ interface Venta {
   metodo_pago: string;
   estado: string;
   fecha: string;
-  cliente: Cliente; // Relación con el cliente
-  empleado: Empleado; // Relación con el empleado
-  detalles: DetalleVenta[]; // Detalles de los productos de la venta
+  cliente: Cliente;
+  empleado: Empleado;
+  detalles: DetalleVenta[];
 }
 
 const DetallesVenta = () => {
   const { id } = useParams(); // Obtienes el id de la venta
-  const [venta, setVenta] = useState<Venta | null>(null); // Tipo de estado con el tipo Venta
-  const [loading, setLoading] = useState(true); // Estado para manejar la carga
-  const [error, setError] = useState<string | null>(null); // Estado para manejar errores
+  const [venta, setVenta] = useState<Venta | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate(); // Hook para navegar entre rutas
 
   useEffect(() => {
-    // Función para obtener los detalles de la venta
     const fetchVentaDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/ventas/${id}`); // Usa la URL de tu API
-        console.log('Datos de la venta:', response.data);  // Verificar la respuesta completa
+        const response = await axios.get(`http://localhost:5000/ventas/${id}`);
         setVenta(response.data);
       } catch (error: any) {
         setError(error.message);
@@ -88,64 +89,196 @@ const DetallesVenta = () => {
   if (!venta) return <p className="text-center text-gray-600">No se encontraron detalles de la venta.</p>;
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow-xl rounded-lg mt-10 border border-gray-200 cardetalleventa">
-      <h1 className="text-3xl font-bold text-gray-800 border-b pb-4">Detalles de la Venta {venta.venta_id}</h1>
-      
-      <div className="grid grid-cols-1 gap-6 mt-4">
-        <div className="bg-gray-50 p-4 rounded-lg shadow-md border">
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">Información de la Venta</h2>
-          <p><strong>Total Neto:</strong> ${venta.total_neto}</p>
-          <p><strong>Total:</strong> ${venta.total}</p>
-          <p><strong>Descuento:</strong> ${venta.descuento}</p>
-          <p><strong>Impuestos:</strong> ${venta.impuestos}</p>
-          <p><strong>Método de Pago:</strong> {venta.metodo_pago}</p>
-          <p><strong>Estado:</strong> {venta.estado}</p>
-          <p><strong>Fecha:</strong> {new Date(venta.fecha).toLocaleString()}</p>
-        </div>
-        
-        <div className="bg-gray-50 p-4 rounded-lg shadow-md border">
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">Cliente</h2>
-          <p><strong>Nombre:</strong> {venta.cliente?.nombre}</p>
-          <p><strong>Email:</strong> {venta.cliente?.email}</p>
-          <p><strong>Teléfono:</strong> {venta.cliente?.telefono}</p>
-          <p><strong>Dirección:</strong> {venta.cliente?.direccion}</p>
-          <p><strong>Estado:</strong> {venta.cliente?.estado}</p>
-          <p><strong>Tipo Cliente:</strong> {venta.cliente?.tipo_cliente}</p>
-        </div>
-      </div>
+    <div
 
-      <div className="bg-gray-50 p-4 rounded-lg shadow-md border mt-6">
-        <h2 className="text-xl font-semibold text-gray-700 mb-2">Empleado</h2>
-        <p><strong>Nombre:</strong> {venta.empleado?.nombre}</p>
-        <p><strong>Puesto:</strong> {venta.empleado?.puesto}</p>
-        <p><strong>Email:</strong> {venta.empleado?.email}</p>
-        <p><strong>Teléfono:</strong> {venta.empleado?.telefono}</p>
-      </div>
+    >
+      <Card sx={{ color: 'black' }}>
+        <CardContent>
+          <Typography variant="h5" gutterBottom>
+            Detalles de la Venta {venta.venta_id}
+          </Typography>
 
-      {/* Mostrar los productos de la venta */}
-      <div className="bg-gray-50 p-4 rounded-lg shadow-md border mt-6">
-        <h2 className="text-xl font-semibold text-gray-700 mb-2">Productos</h2>
-        <table className="w-full table-auto">
-          <thead>
-            <tr>
-              <th className="px-4 py-2 text-left">Producto</th>
-              <th className="px-4 py-2 text-left">Cantidad</th>
-              <th className="px-4 py-2 text-left">Precio Unitario</th>
-              <th className="px-4 py-2 text-left">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {venta.detalles?.map((detalle, index) => (
-              <tr key={index}>
-                <td className="px-4 py-2">{detalle.nombre}</td> {/* Nombre del producto */}
-                <td className="px-4 py-2">{detalle.cantidad}</td>
-                <td className="px-4 py-2">${detalle.precio}</td> {/* Precio unitario */}
-                <td className="px-4 py-2">${detalle.subtotal}</td> {/* Total */}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          {/* Información de la venta */}
+          <Typography variant="h6" gutterBottom>
+            Información de la Venta
+          </Typography>
+
+          <Grid container spacing={60} justifyContent="center">
+            <Grid item xs={12} sm={6} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Total Neto:</strong></Typography>
+                <Typography>${venta.total_neto > 0 ? venta.total_neto : '0.00'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Total:</strong></Typography>
+                <Typography>${venta.total > 0 ? venta.total : '0.00'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Descuento:</strong></Typography>
+                <Typography>${venta.descuento > 0 ? venta.descuento : '0.00'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Impuestos:</strong></Typography>
+                <Typography>${venta.impuestos > 0 ? venta.impuestos : '0.00'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Método de Pago:</strong></Typography>
+                <Typography>{venta.metodo_pago}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Estado:</strong></Typography>
+                <Typography>{venta.estado}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Fecha:</strong></Typography>
+                <Typography>{new Date(venta.fecha).toLocaleString()}</Typography>
+              </div>
+            </Grid>
+          </Grid>
+
+
+
+
+
+          {/* Información del cliente */}
+          <Typography variant="h6" gutterBottom className="mt-4">
+            Cliente
+          </Typography>
+
+          <Grid container spacing={60} justifyContent="center">
+            <Grid item xs={12} sm={6} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Nombre:</strong></Typography>
+                <Typography>{venta.cliente?.nombre || 'No disponible'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Email:</strong></Typography>
+                <Typography>{venta.cliente?.email || 'No disponible'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Teléfono:</strong></Typography>
+                <Typography>{venta.cliente?.telefono || 'No disponible'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Dirección:</strong></Typography>
+                <Typography>{venta.cliente?.direccion || 'No disponible'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Estado:</strong></Typography>
+                <Typography>{venta.cliente?.estado || 'No disponible'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Tipo Cliente:</strong></Typography>
+                <Typography>{venta.cliente?.tipo_cliente || 'No disponible'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>RUC/Cédula:</strong></Typography>
+                <Typography>{venta.cliente?.ruc_cedula || 'No disponible'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Método de Contacto Preferido:</strong></Typography>
+                <Typography>{venta.cliente?.metodo_contacto_preferido || 'No disponible'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Nivel de Satisfacción:</strong></Typography>
+                <Typography>{venta.cliente?.nivel_satisfaccion || 'No disponible'}</Typography>
+              </div>
+            </Grid>
+          </Grid>
+
+
+
+
+
+
+
+          {/* Información del empleado */}
+          <Typography variant="h6" gutterBottom className="mt-4">
+            Empleado
+          </Typography>
+
+          <Grid container spacing={60} justifyContent="center">
+            <Grid item xs={12} sm={6} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Nombre:</strong></Typography>
+                <Typography>{venta.empleado?.nombre || 'No disponible'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Puesto:</strong></Typography>
+                <Typography>{venta.empleado?.puesto || 'No disponible'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Email:</strong></Typography>
+                <Typography>{venta.empleado?.email || 'No disponible'}</Typography>
+              </div>
+              <div style={{ marginBottom: '10px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Typography><strong>Teléfono:</strong></Typography>
+                <Typography>{venta.empleado?.telefono || 'No disponible'}</Typography>
+              </div>
+            </Grid>
+          </Grid>
+
+          {/* Detalles de los productos vendidos */}
+          <Typography variant="h6" gutterBottom className="mt-4">
+            Productos Vendidos
+          </Typography>
+          <TableContainer component={Paper} style={{ maxWidth: '600px', margin: '0 auto' }}>
+          <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell><strong>Producto</strong></TableCell>
+                  <TableCell><strong>Descripción</strong></TableCell>
+                  <TableCell><strong>Cantidad</strong></TableCell>
+                  <TableCell><strong>Precio Unitario</strong></TableCell>
+                  <TableCell><strong>Subtotal</strong></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {venta.detalles?.length ? (
+                  venta.detalles.map((detalle, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{detalle.producto?.nombre || 'Producto no disponible'}</TableCell>
+                      <TableCell>{detalle.producto?.descripcion || 'Descripción no disponible'}</TableCell>
+                      <TableCell>{detalle.cantidad || '0'}</TableCell>
+                      <TableCell>${detalle.precio || '0.00'}</TableCell>
+                      <TableCell>${detalle.subtotal || '0.00'}</TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={5} align="center">No hay productos vendidos</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+
+        </CardContent>
+      </Card>
+
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => navigate("/detalleventa/historial")}
+        style={{
+          position: 'fixed',
+          top: '10px', // Puedes ajustar este valor si lo deseas más cerca o lejos del borde superior
+          left: '10px', // Moverlo al lado izquierdo
+          zIndex: 1000,
+          borderRadius: '50%',
+          width: "60px",
+          height: "60px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textTransform: "none",
+        }}
+      >
+        <ArrowBackIcon style={{ fontSize: "32px", color: 'white' }} />
+      </Button>
+
     </div>
   );
 };

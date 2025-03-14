@@ -5,13 +5,19 @@ const router = Router();
 // Importar controlador
 const {
 obtenerPago,
-insertarPago
+insertarPago,
+actualizarPago,
+eliminarPago
 
 } = require('../controllers/pagoController');
 
 // Rutas del inventario
 router.get('/obtenerpagos', obtenerPago); // Obtener todos los PagosAdicionales
-router.post('/pagos', insertarPago); // Crear un nuevo PagosAdicionales
+router.post('/Ingresarpagos', insertarPago); // Crear un nuevo PagosAdicionales
+
+router.put('/actualizarpago/:id_pago', actualizarPago); // Actualizar un pago adicional
+router.delete('/eliminarpago/:id_pago', eliminarPago); // Eliminar un pago adicional
+
 
 // router.get('/inventarios/:id_inventarios', obtenerInventarioPorId); // Obtener inventario por ID
 // router.put('/inventarios/:id_inventarios', actualizarInventarioPorId); // Actualizar inventario por ID

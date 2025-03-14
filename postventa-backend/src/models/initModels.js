@@ -1,4 +1,3 @@
-// Asegúrate de que todas las importaciones estén presentes al principio del archivo
 const Producto = require("./producto");
 const Inventario = require("./inventario");
 const Empleado = require("./empleado");
@@ -22,6 +21,10 @@ const initModels = (sequelize) => {
   // Relación entre CompraProducto y Producto (Muchos a Uno)
   Producto.hasMany(CompraProducto, { foreignKey: "producto_id", as: "compras" });
   CompraProducto.belongsTo(Producto, { foreignKey: "producto_id", as: "producto" });
+
+  // Relación entre DetalleVenta y CompraProducto (Muchos a Uno)
+  CompraProducto.hasMany(DetalleVenta, { foreignKey: "compra_producto_id", as: "detalles" });
+  DetalleVenta.belongsTo(CompraProducto, { foreignKey: "compra_producto_id", as: "compra" });
 
   // Relación entre Producto e Inventario (Uno a Muchos)
   Producto.hasMany(Inventario, { foreignKey: "producto_id", as: "inventarios" });
