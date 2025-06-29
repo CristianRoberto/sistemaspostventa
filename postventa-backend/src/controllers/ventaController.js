@@ -314,6 +314,17 @@ const crearVenta = async (req, res) => {
       );
       console.log(`✅ Puntos acumulados actualizados para el cliente con ID: ${cliente_id}`);
 
+
+      // 3. Actualizar el total de compras del cliente
+      await Cliente.update(
+        {
+          total_compras: sequelize.literal(`COALESCE(total_compras, 0) + ${total}`)
+        },
+        { where: { cliente_id }, transaction }
+      );
+      console.log(`✅ Total de compras actualizado para el cliente con ID: ${cliente_id}`);
+
+
       // 3. Insertar la transacción de puntos
       console.log(`🔄 Insertando transacción de puntos para el cliente con ID: ${cliente_id}`);
       await TransaccionPuntos.create(

@@ -48,7 +48,11 @@ app.use(bodyParser.json({ limit: '100mb' }));
 // Rutas
 app.use(require('./src/routes/index.js'));
 app.use(require('./src/routes/empleadoRoutes.js'));
+app.use(require('./src/routes/clientesRoutes.js'));
 app.use(require('./src/routes/provedoreRoutes.js'));
+
+
+app.use(require('./src/routes/resumenVentaRoutes.js'));
 app.use(require('./src/routes/provedoreRoutes.js'));
 app.use(require('./src/routes/inventario.js'));
 app.use(require('./src/routes/detalleVentaRoutes.js'));
@@ -57,11 +61,8 @@ app.use(require('./src/routes/facturasRoutes.js'));
 app.use(require('./src/routes/CompraProductoRoutes.js'));
 app.use(require('./src/routes/cierrecajaRoutes.js'));
 app.use(require('./src/routes/devolucionRoutes.js'));
-
 app.use(require('./src/routes/pagosRoutes.js'));
-
 app.use(require('./src/routes/capitalRoutes.js'));
-
 app.use(require('./src/routes/utilidadDiariaRoutes.js'));
 
 

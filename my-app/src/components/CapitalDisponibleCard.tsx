@@ -25,12 +25,32 @@ const CapitalDisponibleCard = () => {
   }
 
   return (
-    <div className="card" style={{ backgroundColor: '#4CAF50', color: '#fff', width:'32%', height:'180px',  margin: '0 auto' }}>
-      <div   className="card-header">
-        <h3>Capital Disponible</h3>
+    <div
+      className="card"
+      style={{
+        backgroundColor: '#4CAF50',
+        color: '#fff',
+        width: '100%',
+        margin: '0',
+        textAlign: 'center',
+        padding: '1rem',
+        boxSizing: 'border-box',
+        borderRadius: '12px'
+      }}
+    >
+      <div
+        className="card-header"
+        style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
+        }}
+      >
+        <h3 style={{ margin: 0, fontSize: '1.8rem' }}>Capital Disponible</h3>
       </div>
-        <p style={{ fontSize:'30px' }}>{`$${parseFloat(capital).toLocaleString()} USD`}</p>
+      <p style={{ fontSize: '36px', marginTop: '1rem' }}>{`$${parseFloat(capital).toLocaleString()} USD`}</p>
     </div>
+
   );
 };
 

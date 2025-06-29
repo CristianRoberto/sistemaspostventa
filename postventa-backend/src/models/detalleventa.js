@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-const DetalleVenta = sequelize.define('Detalleventa', {
+const DetalleVenta = sequelize.define('DetalleVenta', {
   detalle_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -11,7 +11,7 @@ const DetalleVenta = sequelize.define('Detalleventa', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'ventas',
+      model: 'ventas',  // Asegúrate de que el modelo se llame 'Venta' en Sequelize
       key: 'venta_id',
     },
     onDelete: 'CASCADE',
@@ -20,7 +20,7 @@ const DetalleVenta = sequelize.define('Detalleventa', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'productos',
+      model: 'productos',  // Asegúrate de que el modelo se llame 'Producto' en Sequelize
       key: 'producto_id',
     },
     onDelete: 'CASCADE',
@@ -41,12 +41,12 @@ const DetalleVenta = sequelize.define('Detalleventa', {
   },
   factura_id: {
     type: DataTypes.INTEGER,
-    allowNull: true,  // Permitimos que sea nulo por si no siempre se asocia a una factura
+    allowNull: true,  
     references: {
-      model: 'facturas',
+      model: 'facturas',  // Asegúrate de que el modelo se llame 'Factura' en Sequelize
       key: 'factura_id',
     },
-    onDelete: 'SET NULL',  // Si la factura es eliminada, no eliminar el detalle de la venta
+    onDelete: 'SET NULL',
   },
 }, {
   tableName: 'detalle_venta',

@@ -2,6 +2,40 @@ const Inventario = require('../models/inventario'); // Asegúrate de que el mode
 const Producto = require('../models/producto'); // Asegúrate de que el modelo Producto esté importado correctamente
 const Empleado = require('../models/empleado'); // Asegúrate de que el modelo Producto esté importado correctamente
 
+const { sequelize, Sequelize } = require('../config/db');
+
+
+
+// Obtener resumen de inventario agrupado por producto
+const obtenerResumenInventario = async (req, res) => {
+  try {
+    const resumen = await Inventario.findAll({
+      attributes: [
+        'producto_id',
+        [Sequelize.fn('SUM', Sequelize.col('cantidad')), 'stockTotal']
+      ],
+      include: [
+        {
+          model: Producto,
+          as: "producto",
+          attributes: ['nombre'],
+          required: false
+        }
+      ],
+      group: ['Inventario.producto_id', 'producto.nombre'],
+      raw: true,
+      nest: true
+    });
+
+    console.log("Resumen de inventario agrupado:", resumen);
+    res.json(resumen);
+  } catch (error) {
+    console.error("Error al obtener resumen inventario:", error);
+    res.status(500).json({ error: "Error al obtener resumen inventario" });
+  }
+};
+
+
 
 
 // Obtener todos los inventarios
@@ -309,6 +343,7 @@ module.exports = {
   actualizarInventarioPorId,
   eliminarInventarioPorId,
   eliminarInventarios,
-  verificarStockBajo
+  verificarStockBajo,
+  obtenerResumenInventario
   
 };

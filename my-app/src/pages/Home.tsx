@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import "../App.css";
 import "../css/Home.css";
 import { Typography } from "@mui/material";
+import cajeroImg from '../assets/cajero.jpg'; // Asegúrate de usar el nombre correcto del archivo
+
+import adminImg from '../assets/admin.png'; // Asegúrate de usar el nombre correcto del archivo
+
 
 
 const Home: React.FC = () => {
@@ -24,55 +28,72 @@ const Home: React.FC = () => {
 
           {/* Contenido dentro de la tarjeta */}
           {usuario ? (
-            <div className="profile-card" style={{background:'', color:'#6a11cb'}}>
+
+            <div className="profile-card" style={{ background: '', color: '#6a11cb' }}>
               <div className="profile-info">
-
-
                 <Typography>
-                  <h1 style={{
-                    fontWeight: '600',
-                    // textTransform: 'uppercase',
-                    background: 'linear-gradient(45deg, #6a11cb, #2575fc)', // Degradado suave
-                    WebkitBackgroundClip: 'text', // Aplica el gradiente solo al texto
-                    color: 'transparent', // Hace el texto transparente para que solo se vea el gradiente
-                    width: '100%',
-                    margin: '0 auto',
-                    borderRadius: '50px',
-                    textAlign: 'center', // Asegura que el texto esté centrado
-                  }}>
-                    Bienvenido a tu perfil
-                  </h1>
 
+                  {/* Imagen para cajero */}
+                  {usuario.rol?.toLowerCase().trim() === 'cajero' && (
+                    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                      <img
+                        src={cajeroImg}
+                        alt="Foto de cajero"
+                        style={{
+                          width: '100px',
+                          height: '100px',
+                          borderRadius: '50%',
+                          objectFit: 'cover',
+                          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {/* Imagen para admin */}
+                  {usuario.rol?.toLowerCase().trim() === 'admin' && (
+                    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                      <img
+                        src={adminImg}
+                        alt="Foto de administrador"
+                        style={{
+                          width: '100px',
+                          height: '100px',
+                          borderRadius: '50%',
+                          objectFit: 'cover',
+                          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                        }}
+                      />
+                    </div>
+                  )}
 
                   <h1
                     style={{
                       fontWeight: '600',
                       textTransform: 'uppercase',
-                      background: 'linear-gradient(45deg, #6a11cb, #2575fc)', // Degradado suave
-                      WebkitBackgroundClip: 'text', // Aplica el gradiente solo al texto
-                      color: 'transparent', // Hace el texto transparente para que solo se vea el gradiente
+                      background: 'linear-gradient(45deg, #6a11cb, #2575fc)',
+                      WebkitBackgroundClip: 'text',
+                      color: 'transparent',
                       width: '100%',
-                      margin: '0 auto',
+                      margin: '20px auto 0',
                       borderRadius: '50px',
-                      textAlign: 'center', // Asegura que el texto esté centrado
-                      padding: '20px', // Agrega un poco de espacio dentro de la tarjeta
+                      textAlign: 'center',
+                      padding: '20px',
                     }}
                   >
-                    {usuario ? usuario.nombre : 'Invitado'} 
+                    {usuario ? usuario.nombre : 'Invitado'}
                   </h1>
-
                 </Typography>
-
-
-
 
                 <p><strong>Nombre:</strong> {usuario.nombre}</p>
                 <p><strong>Correo:</strong> {usuario.correo}</p>
                 <p><strong>Rol:</strong> {usuario.rol}</p>
-                {/* <p><strong>Empleado ID:</strong> {usuario.empleado_id || "No asignado"}</p> */}
               </div>
-              {/* <Link to="/editar-perfil" className="btn btn-edit-profile">Editar Perfil</Link> */}
             </div>
+
+
+
+
           ) : (
             <div className="auth-links">
               <p>Accede a tu cuenta o regístrate para continuar.</p>

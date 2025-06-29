@@ -30,6 +30,20 @@ const obtenerClientes = async (req, res) => {
 
 
 
+
+// Obtener el total de Clientes
+const obtenerTotalCliente = async (req, res) => {
+  try {
+    const total = await Cliente.count();
+    return res.status(200).json({ total });
+  } catch (error) {
+    console.error('Error al contar Clientes:', error);
+    return res.status(500).json({ error: 'Error al contar Clientes' });
+  }
+};
+
+
+
 // Agregar un Cliente
 const agregarCliente = async (req, res) => {
   try {
@@ -320,5 +334,6 @@ module.exports = {
   obtenerClientePorId,
   actualizarClientePorId,
   eliminarClientePorId,
-  eliminarClientes
+  eliminarClientes, 
+  obtenerTotalCliente
 };

@@ -10,7 +10,8 @@ const {
   actualizarInventarioPorId,
   eliminarInventarioPorId,
   eliminarInventarios,
-  verificarStockBajo
+  verificarStockBajo,
+  obtenerResumenInventario
 } = require('../controllers/inventarioController');
 
 // Rutas del inventario
@@ -24,6 +25,7 @@ router.delete('/inventarios/', eliminarInventarios); // Eliminar todos los inven
 
 router.get('/inventariosstock/:producto_id', verificarStockBajo); // Obtener todos los inventarios
 
+router.get('/resumeninventario', obtenerResumenInventario);
 
 // app.use("/api", stockRoutes);
 

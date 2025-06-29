@@ -23,8 +23,8 @@ const initModels = (sequelize) => {
   CompraProducto.belongsTo(Producto, { foreignKey: "producto_id", as: "producto" });
 
   // Relación entre DetalleVenta y CompraProducto (Muchos a Uno)
-  CompraProducto.hasMany(DetalleVenta, { foreignKey: "compra_producto_id", as: "detalles" });
-  DetalleVenta.belongsTo(CompraProducto, { foreignKey: "compra_producto_id", as: "compra" });
+  // CompraProducto.hasMany(DetalleVenta, { foreignKey: "compra_producto_id", as: "detalles" });
+  // DetalleVenta.belongsTo(CompraProducto, { foreignKey: "compra_producto_id", as: "compra" });
 
   // Relación entre Producto e Inventario (Uno a Muchos)
   Producto.hasMany(Inventario, { foreignKey: "producto_id", as: "inventarios" });

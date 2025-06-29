@@ -6,6 +6,7 @@ import { ShoppingBag } from 'lucide-react';
 import { Undo, Edit } from '@mui/icons-material';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';  // Importa el icono de cartera
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
@@ -20,15 +21,14 @@ const Navbar: React.FC = () => {
   console.log('Rol del usuario:', userRole);  // Agregado para verificar el rol
 
   // Ejemplo de cómo podrías calcular la utilidad
-  useEffect(() => {
-    // Simulación de cálculo de utilidad (esto debería venir de tu lógica real)
-    const calcularUtilidad = () => {
-      // Aquí podrías hacer la lógica para calcular la utilidad basada en las ventas, compras, etc.
-      setUtilidad(5000);  // Esta es una utilidad de ejemplo
-    };
+  // useEffect(() => {
+  //   // Simulación de cálculo de utilidad (esto debería venir de tu lógica real)
+  //   const calcularUtilidad = () => {
+  //     // Aquí podrías hacer la lógica para calcular la utilidad basada en las ventas, compras, etc.
+  //   };
 
-    calcularUtilidad();
-  }, []);
+  //   calcularUtilidad();
+  // }, []);
 
   const toggleSubMenu = (menu: string) => {
     setOpenSubMenu(openSubMenu === menu ? null : menu);
@@ -81,29 +81,45 @@ const Navbar: React.FC = () => {
         </li>
 
 
-        {/* Utilidad */}
+
         <li>
-          <div className="menu-item" onClick={() => toggleSubMenu("utilidad")}>
-            <span
-              className={`menu-link ${selectedMenu === "utilidad" ? "active-menu" : ""}`}
-              onClick={() => handleMenuClick("utilidad")}
-            >
-              <AccountBalanceWalletIcon /> {isOpen && `Utilidad: ${utilidad}`} {/* Muestra la utilidad */}
-            </span>
-            <span className="submenu-toggle">{openSubMenu === "utilidad" ? "▲" : "▼"}</span>
-          </div>
-          {isOpen && openSubMenu === "utilidad" && (
-            <ul className="submenu">
-              {/* Solo para Admin */}
-              {userRole === "admin" && (
-                <>
-                  <li><Link to="/utilidad/"><Description /> Generar Reporte de Utilidad</Link></li>
-                  <li><Link to="/utilidad/listado"><PersonAdd /> Resultados de utilidades</Link></li>
-                </>
-              )}
-            </ul>
-          )}
+          <Link
+            to="/home"
+            onClick={() => handleMenuClick("perfil")}
+            className={selectedMenu === "perfil" ? "active-menu" : ""}
+          >
+            <AccountCircleIcon /> {isOpen && "Perfil"}
+          </Link>
         </li>
+
+
+
+
+
+
+
+        {/* Utilidad */}
+        {/* Utilidad (Solo Admin) */}
+        {userRole === "admin" && (
+          <li>
+            <div className="menu-item" onClick={() => toggleSubMenu("utilidad")}>
+              <span
+                className={`menu-link ${selectedMenu === "utilidad" ? "active-menu" : ""}`}
+                onClick={() => handleMenuClick("utilidad")}
+              >
+                <AccountBalanceWalletIcon /> {isOpen && "Utilidad"}
+              </span>
+              <span className="submenu-toggle">{openSubMenu === "utilidad" ? "▲" : "▼"}</span>
+            </div>
+            {isOpen && openSubMenu === "utilidad" && (
+              <ul className="submenu">
+                <li><Link to="/utilidad/"><Description /> Generar Reporte de Utilidad</Link></li>
+                <li><Link to="/utilidad/listado"><PersonAdd /> Resultados de utilidades</Link></li>
+              </ul>
+            )}
+          </li>
+        )}
+
 
         {/* Inventario (Solo para Admin) */}
         {userRole === "admin" && (
@@ -150,7 +166,7 @@ const Navbar: React.FC = () => {
         )}
 
         {/* Clientes */}
-        {userRole === "admin" && (
+        {/* {userRole === "admin" && ( */}
           <li>
             <div className="menu-item" onClick={() => toggleSubMenu("clientes")}>
               <span
@@ -168,7 +184,7 @@ const Navbar: React.FC = () => {
               </ul>
             )}
           </li>
-        )}
+        {/* )} */}
 
         {/* Compras */}
         {userRole === "admin" && (
@@ -244,7 +260,7 @@ const Navbar: React.FC = () => {
 
 
         {/* Detalle de Venta */}
-        {userRole === "admin" && (
+        {/* {userRole === "admin" && ( */}
 
           <li>
             <div className="menu-item" onClick={() => toggleSubMenu("detalleventa")}>
@@ -263,7 +279,7 @@ const Navbar: React.FC = () => {
               </ul>
             )}
           </li>
-        )}
+        {/* )} */}
 
 
         {/* Detalle de Devoluciones */}
@@ -313,7 +329,7 @@ const Navbar: React.FC = () => {
 
 
         {/* Facturación */}
-        {userRole === "admin" && (
+        {/* {userRole === "admin" && ( */}
 
           <li>
             <div className="menu-item" onClick={() => toggleSubMenu("facturacion")}>
@@ -332,7 +348,7 @@ const Navbar: React.FC = () => {
               </ul>
             )}
           </li>
-        )}
+        {/* )} */}
 
         {/* Cierre Caja */}
         {(userRole === "admin" || userRole === "cajero") && (
@@ -357,23 +373,26 @@ const Navbar: React.FC = () => {
         )}
 
         {/* Configuración */}
-        <li>
-          <div className="menu-item" onClick={() => toggleSubMenu("configuracion")}>
-            <span
-              className={`menu-link ${selectedMenu === "configuracion" ? "active-menu" : ""}`}
-              onClick={() => handleMenuClick("configuracion")}
-            >
-              <Settings /> {isOpen && "Configuración"}
-            </span>
-            <span className="submenu-toggle">{openSubMenu === "configuracion" ? "▲" : "▼"}</span>
-          </div>
-          {isOpen && openSubMenu === "configuracion" && (
-            <ul className="submenu">
-              <li><Link to="/configuracion/usuarios"><People /> Usuarios</Link></li>
-              <li><Link to="/configuracion/roles"><Description /> Roles y Permisos</Link></li>
-            </ul>
-          )}
-        </li>
+        {userRole === "admin" && (
+          <li>
+            <div className="menu-item" onClick={() => toggleSubMenu("configuracion")}>
+              <span
+                className={`menu-link ${selectedMenu === "configuracion" ? "active-menu" : ""}`}
+                onClick={() => handleMenuClick("configuracion")}
+              >
+                <Settings /> {isOpen && "Configuración"}
+              </span>
+              <span className="submenu-toggle">{openSubMenu === "configuracion" ? "▲" : "▼"}</span>
+            </div>
+            {isOpen && openSubMenu === "configuracion" && (
+              <ul className="submenu">
+                <li><Link to="/configuracion/usuarios"><People /> Usuarios</Link></li>
+                <li><Link to="/configuracion/roles"><Description /> Roles y Permisos</Link></li>
+              </ul>
+            )}
+          </li>
+        )}
+
 
         {/* Cerrar Sesión */}
         <li>

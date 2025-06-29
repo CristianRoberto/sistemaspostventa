@@ -9,9 +9,6 @@ const {
     defectoCategorias, obtenerCategorias, agregarCategoria, obtenerCategoriaPorId, eliminarCategoriaPorId,
     eliminarCategorias, actualizarCategoriaPorId } = require('../controllers/categoriaController');
 
-const {
-    obtenerClientes, agregarCliente, obtenerClientePorId, eliminarClientePorId,
-    eliminarClientes, actualizarClientePorId } = require('../controllers/clienteController');
 
 const {
         obtenerVentas,  obtenerVentasPorId, eliminarVentasPorId,
@@ -42,13 +39,7 @@ router.delete('/categorias/', eliminarCategorias);
 router.put('/categorias/:categoria_id', actualizarCategoriaPorId);
 
 
-//router Clientes
-router.get('/clientes', obtenerClientes);
-router.post('/clientes', agregarCliente);
-router.get('/clientes/:cliente_id', obtenerClientePorId);
-router.delete('/clientes/:cliente_id', eliminarClientePorId);
-router.delete('/clientes/', eliminarClientes);
-router.put('/clientes/:cliente_id', actualizarClientePorId);
+
 
 //router Ventas
 router.get('/ventas', obtenerVentas);

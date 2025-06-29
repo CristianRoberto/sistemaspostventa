@@ -97,6 +97,9 @@ const cerrarCaja = async (req, res) => {
                 fecha: { [Sequelize.Op.gte]: cierreCaja.fecha_apertura }
             },
         });
+        
+        console.log("Ventas realizadas:", ventasRealizadas);
+        
 
         const totalVentas = ventasRealizadas ? parseFloat(ventasRealizadas) : 0.00;
         console.log("Total de ventas registradas:", totalVentas);

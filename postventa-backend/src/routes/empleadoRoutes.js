@@ -5,7 +5,8 @@ const {
     agregarEmpleado, 
     eliminarEmpleadoId, 
     actualizarempleadoPorId, 
-    obtenerEmpleadoPorCedula 
+    obtenerEmpleadoPorCedula ,
+    obtenerTotalEmpleados
 } = require("../controllers/empleadoController");
 
 router.get('/empleado', obtenerEmpleado); // Obtener todos los empleados
@@ -13,5 +14,7 @@ router.get('/empleado/:cedula', obtenerEmpleadoPorCedula); // Buscar empleado po
 router.post('/empleado', agregarEmpleado); // Agregar nuevo empleado
 router.delete('/empleado/:empleado_id', eliminarEmpleadoId); // Eliminar empleado por ID
 router.put('/empleado/:empleado_id', actualizarempleadoPorId); // Actualizar empleado por ID
+router.get('/totalempleados', obtenerTotalEmpleados);
+
 
 module.exports = router;
